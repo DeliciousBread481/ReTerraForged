@@ -23,13 +23,24 @@ public class TemplateBuffer extends PasteBuffer {
         this.placementMask.clear();
         this.world = world;
         this.origin = origin;
-        this.placementMask.set(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ());
+        this.placementMask.set(
+            origin.getX() + p1.getX(),
+            origin.getY() + p1.getY(),
+            origin.getZ() + p1.getZ(),
+            origin.getX() + p2.getX(),
+            origin.getY() + p2.getY(),
+            origin.getZ() + p2.getZ()
+        );
         return this;
     }
 
     public void record(int i, BlockInfo block, BlockPos pastePos, TemplatePlacement<?> placement, PasteConfig config) {
         if (!config.replaceSolid() && !placement.canReplaceAt(this.world, pastePos)) {
-        	this.placementMask.set(block.pos().getX(), block.pos().getY(), block.pos().getZ());
+        	this.placementMask.set(
+                this.origin.getX() + block.pos().getX(),
+                this.origin.getY() + block.pos().getY(),
+                this.origin.getZ() + block.pos().getZ()
+            );
             return;
         }
 
