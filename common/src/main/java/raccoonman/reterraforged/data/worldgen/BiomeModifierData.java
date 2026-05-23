@@ -19,7 +19,7 @@ import raccoonman.reterraforged.data.worldgen.preset.Preset;
 import raccoonman.reterraforged.registries.RTFRegistries;
 import raccoonman.reterraforged.world.worldgen.biome.modifier.BiomeModifier;
 import raccoonman.reterraforged.world.worldgen.biome.modifier.BiomeModifiers;
-import raccoonman.reterraforged.world.worldgen.biome.modifier.Filter.Behavior;
+import raccoonman.reterraforged.world.worldgen.biome.modifier.Filter;
 import raccoonman.reterraforged.world.worldgen.biome.modifier.Order;
 
 public class BiomeModifierData {
@@ -38,7 +38,7 @@ public class BiomeModifierData {
 
 		ctx.register(ADD_PRE_PROCESSING, prepend(GenerationStep.Decoration.RAW_GENERATION, placedFeatures.getOrThrow(RTFPlacedFeatures.ERODE)));
 		ctx.register(ADD_POST_PROCESSING, append(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, placedFeatures.getOrThrow(RTFPlacedFeatures.DECORATE_SNOW)));
-		ctx.register(ADD_SWAMP_SURFACE, prepend(GenerationStep.Decoration.RAW_GENERATION, swamps, placedFeatures.getOrThrow(RTFPlacedFeatures.SWAMP_SURFACE)));
+		ctx.register(ADD_SWAMP_SURFACE, prepend(GenerationStep.Decoration.RAW_GENERATION, Filter.Behavior.WHITELIST, swamps, placedFeatures.getOrThrow(RTFPlacedFeatures.SWAMP_SURFACE)));
 		
 		ctx.register(REPLACE_ACACIA_TREES, replaceAcaciaTrees(placedFeatures));
 //		ctx.register(ADD_FOREST_GRASS, BiomeModifiers.add(Order.PREPEND, GenerationStep.Decoration.VEGETAL_DECORATION, forests, placedFeatures.getOrThrow(RTFPlacedFeatures.FOREST_GRASS)));
@@ -56,9 +56,9 @@ public class BiomeModifierData {
 	}
 
 	@SafeVarargs
-	private static BiomeModifier prepend(GenerationStep.Decoration step, HolderSet<Biome> biomes, Holder<PlacedFeature>... features) {
-		return BiomeModifiers.add(Order.PREPEND, step, Filter.Behavior.WHITELIST, biomes, HolderSet.direct(features));
-	}
+    private static BiomeModifier prepend(GenerationStep.Decoration step, Filter.Behavior filterBehavior, HolderSet<Biome> biomes, Holder<PlacedFeature>... features) {
+        return BiomeModifiers.add(Order.PREPEND, step, filterBehavior, biomes, HolderSet.direct(features));
+    }
 
 	@SafeVarargs
 	private static BiomeModifier append(GenerationStep.Decoration step, Holder<PlacedFeature>... features) {
@@ -66,9 +66,9 @@ public class BiomeModifierData {
 	}
 	
 	@SafeVarargs
-	private static BiomeModifier append(GenerationStep.Decoration step, HolderSet<Biome> biomes, Holder<PlacedFeature>... features) {
-		return BiomeModifiers.add(Order.APPEND, step, Filter.Behavior.WHITELIST, biomes, HolderSet.direct(features));
-	}
+    private static BiomeModifier append(GenerationStep.Decoration step, Filter.Behavior filterBehavior, HolderSet<Biome> biomes, Holder<PlacedFeature>... features) {
+        return BiomeModifiers.add(Order.APPEND, step, filterBehavior, biomes, HolderSet.direct(features));
+    }
 	
 	private static ResourceKey<BiomeModifier> createKey(String name) {
         return ResourceKey.create(RTFRegistries.BIOME_MODIFIER, RTFCommon.location(name));

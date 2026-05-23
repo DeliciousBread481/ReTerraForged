@@ -66,7 +66,7 @@ public class RTFConfiguredFeatures {
 		
 		ErodeFeature.Config erodeConfig = new ErodeFeature.Config(30, 140, 40, 95, 0.65F, 0.475F, 0.4F, 6F / 255F, 3F / 255F, 256, 3F / 255F, 0.55F);
 		if(miscellaneous.erosionDecorator) {
-			FeatureUtils.register(ctx, ERODE, RTFFeatures.ERODE, new ErodeFeature.Config());
+			FeatureUtils.register(ctx, ERODE, RTFFeatures.ERODE, erodeConfig);
 		}
 		
 		if(miscellaneous.naturalSnowDecorator || miscellaneous.smoothLayerDecorator) {
